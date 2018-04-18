@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1{
+	text-align:center;
+}
+h2{
+	text-align:center;
+	color: navy 
+}
+body { 
+    background: lightgrey;
+}
+</style>
+	
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+</head>
+
+<body>
+<H1 >Number of Tables by Location 
+<H1>
+<H2><a href="index.html">Home</a></H2>
+
+	<canvas id="myChart"></canvas>
+
+	<script>
+		function processData(myData) {
+			// create empty arrays for my chart values and labels
+			var myValues = [];
+			var myLabels = [];
+
+			// use a loop to fill the arrays with our data
+			for (var i = 0 ; i < 8 ; i++) {
+				myLabels[i] = myData[i].Name;
+				myValues[i] = myData[i].Tables;
+			}
+			
+			// use the Chart.js library to draw the chart
+			var myChart = new Chart($("#myChart"), {
+				type: 'polarArea', // try other types: line, bar, pie, doughnut, polarArea
+				data: {
+					labels: myLabels,
+					datasets: [{
+						data: myValues,
+						backgroundColor: "#003366",
+						label: "Tables"
+					}]
+				},
+				"options":{"scales":{"yAxes":[{"ticks":{ "beginAtZero": true }}]}}
+			});
+		}
+
+		// use the jQuery library to grab the data from our spreadsheet API and call processData(myData)
+		$(document).ready(function() {
+			$.getJSON("https://api.myjson.com/bins/kax6r", processData);
+		});
+	</script>
+</body>
+</html>
